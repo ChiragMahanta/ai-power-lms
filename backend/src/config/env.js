@@ -1,0 +1,14 @@
+import { configDotenv } from "dotenv"
+
+configDotenv({quite:true})
+
+export const ENV = {
+    MONGO_URI: process.env.MONGO_URI,
+    PORT: process.env.PORT,
+    JWT_SECRET: process.env.JWT_SECRET ,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    CLOUD_NAME: process.env.CLOUD_NAME,
+    CLOUD_API_KEY:process.env.CLOUD_API_KEY,
+    CLOUD_API_SECRET:process.env.CLOUD_API_SECRET,
+    GEMINI_API_KEY:process.env.GEMINI_API_KEY,
+}
