@@ -29,6 +29,7 @@ const MainRoutes = () => {
         <SinglePurchasedCourse/>
       </ProtectedRoute>
       }/> 
+
       <Route path ='/quiz/:id' element={
       <ProtectedRoute>  
         <Quiz/>
@@ -39,13 +40,33 @@ const MainRoutes = () => {
         <ProtectedRoute>
         <Dashboard/>
         </ProtectedRoute>}> 
-      <Route index element={
+      
+
+      <Route path ='dashboardProduct' element= {
+        <ProtectedRoute>
+          <DashboardProducts/>
+        </ProtectedRoute>}/>
+
+         <Route path='/' element={
+        <ProtectedRoute>
+        
+        </ProtectedRoute>}/>
+
+        <Route path='/cancel' element={
+        <ProtectedRoute>
+        <Cancel/>
+        </ProtectedRoute>}/>
+
+        <Route path='/purchase' element={
+        <PaymentSuccess>
+        <Cancel/>
+        </PaymentSuccess>}/>
+
+        <Route path='/singleCourse/:id' element={
         <ProtectedRoute>
         <DashboardAnalytics/>
         </ProtectedRoute>}/>
-      <Route path ='dashboardProduct' element= {
-        <ProtectedRoute><DashboardProducts/>
-        </ProtectedRoute>}/> 
+
         
       </Route >
       <Route path='CourseModule/:id' element={

@@ -9,6 +9,7 @@ const Quiz = () => {
 const [selectAnswer, setSelected] =useState({})
 const [showResult, setShowResult] =useState(false)
 const [score, setScore] =useState(0)
+const navigate = useNavigate()
 const handlerSelectAnswer= (questionId, selectOption)=>{
     setSelectedAnswer(prev=>({
         ...prev,
@@ -36,26 +37,27 @@ const handlerSelectAnswer= (questionId, selectOption)=>{
             showResult?
             <>
            <div className='bg-white rounded-lg shadow-amber-200 p-8text-center'>
+            <h1 onClick={()=>Navigate(-1)}'bg-white rounded-lg shadow-amber-200 p-8text-center >back</h1>
             <h2 'text-lg front-semibold mb-4'>
                 your  score {score}/{totalQuestion}
             </h2>
             <p className='bg-white rounded-lg shadow-amber-200 p-8text-center' >
                 {score=== totalQuestion?"Perfect Score"
                 :score>= totalQuestion*0.7
-                ?"greate job"
+                ?"great job"
                 :score>= <totalQuestion*0.5
-                ?1"good effort"
+                ?"good effort"
                 :"keep learning"
                 }
             </p>
-            {/*shoe your answer */}
+            {/*show your answer */}
             <div className='bg-white rounded-lg shadow-amber-200 p-8text-center' >
                 <h3 className='bg-white rounded-lg shadow-amber-200 p-8text-center'>
                     
                 </h3>
                 {
                     {question.map((question, index)=>{
-                        const userAnswer = selectAnswer(question._id)
+                        const userAnswer = selectAnswer[question._id]
                         const CorrectAnswer = userAnswer
                         return (
                             <div key={index}
@@ -82,7 +84,9 @@ const handlerSelectAnswer= (questionId, selectOption)=>{
                         </span>
                         <span className= { `${isCorrect?}" border-green-500 bg-green-50 ':' border-red-500 bg-red-50"`}>
                         your{userAnswer}
-                        </span>
+                        </span> 
+                        {!isCorrect &&(
+                        <p></p>)
                 </div>
             </div>
             :
@@ -103,9 +107,13 @@ const handlerSelectAnswer= (questionId, selectOption)=>{
                             return ()
                         })}
     </div>
+    {question.explantion&&(
+    <P>
+    <span className='text bg-gray-400 font-semeibold'  > 
+    explaination${question.explantion}</span></P>)}
 
 </div>
-
+   
                     })
                 }
                 {/*submit button*/ }
@@ -127,6 +135,11 @@ const handlerSelectAnswer= (questionId, selectOption)=>{
             </>
         }
     </div>
+     <button className='text bg-gray-400 font-semeibold onClick={()=
+    >setShowResult(false)
+    setSelectedAnswer({})
+    setScore(0)
+    }> retake quiz</button>
   )
 }
 
