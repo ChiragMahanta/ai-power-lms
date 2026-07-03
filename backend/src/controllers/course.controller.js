@@ -1,8 +1,8 @@
 import cloudinary from "../config/cloudinary.js";
 import { Course } from "../models/course.model.js";
-import { GoogleGenAI } from '@google/genai'
-import { user } from " /..model/user.model.js";
-import{ Modules } from '/..models/module.model.js'
+import { GoogleGenAI } from '@google/genai';
+import { user } from "../models/user.model.js";
+import { Modules } from "../models/module.model.js";
 
 const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY)
 const model = genAI.getGenaiModel({model:'gemini-3.5-flash'})
