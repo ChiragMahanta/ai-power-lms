@@ -1,33 +1,25 @@
-// Mock payment system - No real API keys needed!
-
-import { stripe } from 'stripe'
-
-export const stripe = new Stripe(STRIPE_SECRET-KEY){}
-//     createOrder: async (amount, currency = "INR") => {
-//         // Simulate order creation
-//         return {
-//             id: "mock_order_" + Date.now(),
-//             amount: amount,
-//             currency: currency,
-//             status: "created"
-//         };
-//     },
-    
-//     verifyPayment: async (paymentId) => {
-//         // Simulate payment verification (always successful for testing)
-//         return {
-//             success: true,
-//             paymentId: paymentId,
-//             message: "Payment verified successfully (MOCK MODE)"
-//         };
-//     },
-    
-//     refundPayment: async (paymentId) => {
-//         // Simulate refund
-//         return {
-//             success: true,
-//             refundId: "mock_refund_" + Date.now(),
-//             message: "Refund processed successfully (MOCK MODE)"
-//         };
-//     }
-// };
+// Mock Stripe - No real API key needed! Perfect for testing logic!
+export const stripe = {
+    paymentIntents: {
+        create: async (params) => {
+            return {
+                id: "pi_mock_" + Date.now(),
+                amount: params.amount,
+                currency: params.currency || "inr",
+                status: "requires_payment_method",
+                client_secret: "mock_secret_" + Date.now()
+            };
+        }
+    },
+    checkout: {
+        sessions: {
+            create: async (params) => {
+                return {
+                    id: "cs_mock_" + Date.now(),
+                    url: "https://mock-checkout-url.com/session_" + Date.now(),
+                    payment_status: "unpaid"
+                };
+            }
+        }
+    }
+};
