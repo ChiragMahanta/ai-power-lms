@@ -1,5 +1,5 @@
 import { Course } from "../models/course.model.js";
-import { Modules } from "../models/module.model.js";
+import  Modules  from "../models/module.model.js";
 
 export const createModule = async (req, res) => {
     try {

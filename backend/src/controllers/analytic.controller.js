@@ -1,6 +1,6 @@
-import { User } from "../models/user.model.js"
+import  User from "../models/user.model.js"
 import { Course } from "../models/course.model.js"
-import { Order } from "../models/order.model.js"
+import  Order  from "../models/order.model.js"
 
 export const getAnalyticsData = async()=>{
     const totalUser = await User.countDocuments()
@@ -83,7 +83,7 @@ function getDatesInRange(startDate, endDate){
     }
     return dates
 }
-export const getDailyAnalyticController=async(res, res)=>{
+export const getDailyAnalyticController=async(req, res)=>{
     try {
         const {startDate, endDate} = req.query
         if ( !startDate || !endDate){

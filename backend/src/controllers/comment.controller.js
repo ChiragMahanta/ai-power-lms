@@ -5,7 +5,7 @@ export const createComment = async (req, res) => {
     try {
         const moduleId = req.params.id;
         const {comment } = req.body;
-        const {userId} = req.user._id
+       const userId = req.user._id
 
 
         if(!moduleId){
@@ -25,7 +25,7 @@ export const createComment = async (req, res) => {
             moduleId,
             comment
         })
-        await Modules.findByIdAndUpdate(
+        await Module.findByIdAndUpdate(
             moduleId,
             {$push:{comments:newComment._id}},
             {new:true}

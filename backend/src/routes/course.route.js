@@ -1,22 +1,20 @@
-import express from 'express'
-import { adminRoutes, protectRoutes } from '../middleware/auth.middleware.js'
-import { upload } from '../middleware/upload.js' // FIXED: Removed the space!
+import express from 'express';
+import { adminRoute, protectRoute } from '../middleware/auth.middleware.js';
+import { upload } from '../middleware/upload.js';
 import { 
     createCourse, 
     getPurchasedCourse,
     getCourse, 
     getSingleCourse, 
-    getAllCoursePurchased 
-} from '../controllers/course.controller.js' // FIXED: Added 's' to controllers and added missing imports
+    getAllCoursePurchased
+} from '../controllers/course.controller.js';
 
-const courseRoute = express.Router()
+const courseRoute = express.Router();
 
-// FIXED: Changed protectRoute to protectRoutes
-courseRoute.post('/createCourse', protectRoutes, adminRoutes, upload.single("thumbnail"), createCourse)
-courseRoute.get('/getCourse', protectRoutes, getCourse)
-courseRoute.get('/getSingleCourse/:id', protectRoutes, getSingleCourse)
+courseRoute.post('/createCourse', protectRoute, adminRoute, upload.single("thumbnail"), createCourse);
+courseRoute.get('/getCourse', protectRoute, getCourse);
+courseRoute.get('/getSingleCourse/:id', protectRoute, getSingleCourse);
+courseRoute.get('/purchasedCourse/:id', protectRoute, getPurchasedCourse);
+courseRoute.get('/getAllCoursePurchased/:id', protectRoute, getAllCoursePurchased);
 
-courseRoute.get('/purchasedCourse/:id', protectRoutes, getPurchasedCourse)
-courseRoute.get('/getAllCoursePurchased/:id', protectRoutes, getAllCoursePurchased)
-
-export default courseRoute
+export default courseRoute;

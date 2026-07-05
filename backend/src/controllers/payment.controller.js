@@ -1,102 +1,113 @@
-import {ENV} from "../config/env.js"
-import { stripe } from "../config/stripe.js"
-import{ Course } from "../models/course.model.js"
-import { order } from "../models/order.model.js"
+import { ENV } from "../config/env.js";
+import { stripe } from "../config/stripe.js";
+import { Course } from "../models/course.model.js";
+import Order from "../models/order.model.js"; // ✅ Fixed: Default import + Capital O
 
 
-export const createCheckOutSession = async(req ,res)=>{
+
+
+export const createCheckOutSession = async (req, res) => {
     try {
-        const {products} = req.body;
-        if(!products){
-            return res.status(401).json({message:"please provide course"})
+        const { products } = req.body;
+        if (!products) {
+            return res.status(401).json({ message: "Please provide course" });
         }
-const courseId = products._id
-const course = await Course.findById(courseId)
-return res.status(401).json({message:"Course not found"})
-    
-const alreadyPurchased = await Order.findOne({
-    user : req.user._id,
-    course:courseId
-})
-if (alreadyPurchased){
-    return res.status(201).json({message:"You already have this course"})
 
-}
-const session = await stripe.CheckOut.Sessions.create({
-    payment_method_type: ['card'],
-    line_item:[
-        {
-            price_data:{
-                currency:"inr",
-                product_data:{
-                    name:product.name,
-                    image:product.image,
+        const courseId = products._id;
+        const course = await Course.findById(courseId);
 
-                },
-                unit_amount: Math.round(products.price*100)
-            },
-            quantity:1
+        // ✅ Fixed: Added return so code stops here if course not found
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
         }
-    ],
-    mode: 'payment',
-    success_url :'${ENV. client_url}/purchase?session_id={CHECKOUT_SESSION-ID}',
-    cancel_url:'${ENV.CLIENT.URL}/course/${courseId}',
-    metadata:{
-        userId:req.user._id,
-        courseId:courseId,
-        coursePrice:products.price
+
+        const alreadyPurchased = await Order.findOne({
+            userId: req.user._id,
+            course: courseId
+        });
+
+        if (alreadyPurchased) {
+            return res.status(200).json({ message: "You already have this course" });
         }
-    })
-    return res.status(201).json({
-        success:true,
-        session:session.id,
-        url:session.url
-    })
+
+        // ✅ Fixed: stripe.checkout.sessions (lowercase)
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'], // ✅ Fixed: types not type
+            line_items: [
+                {
+                    price_data: {
+                        currency: "inr",
+                        product_data: {
+                            name: products.title || products.name, // ✅ Fixed: products not product
+                            images: products.thumbnail ? [products.thumbnail] : [], // ✅ Fixed
+                        },
+                        unit_amount: Math.round(products.amount * 100), // ✅ Fixed: amount not price
+                    },
+                    quantity: 1
+                }
+            ],
+            mode: 'payment',
+            success_url: `${ENV.CLIENT_URL}/purchase?session_id={CHECKOUT_SESSION_ID}`, // ✅ Fixed: backticks
+            cancel_url: `${ENV.CLIENT_URL}/course/${courseId}`, // ✅ Fixed: backticks
+            metadata: {
+                userId: req.user._id.toString(),
+                courseId: courseId.toString(),
+                coursePrice: products.amount.toString()
+            }
+        });
+
+        return res.status(200).json({
+            success: true,
+            sessionId: session.id,
+            url: session.url
+        });
     } catch (error) {
-        console.log(error,"from create check out session")      
+        console.log(error, "from create checkout session");
+        return res.status(500).json({ message: "Server error" });
     }
-}
+};
 
-
-export const checkOutSuccess =  async(req, res) =>{
+// ✅ Fixed: Export name matches what route expects
+export const createCheckOutSuccess = async (req, res) => {
     try {
-        const {sessionId} = req.body;
-        if(!sessionId){
-            return req.status(401).json({
-                message:"Id not found"
-            })
+        const { sessionId } = req.body;
+        if (!sessionId) {
+            return res.status(401).json({ message: "Session ID not found" }); // ✅ Fixed: res not req
         }
-         const existingOrder = await Order .findOne({stripesSessionId:sessionId})
-         if(!existingOrder){
-            return res.status(201).json({
-                message:"Order already created"
-            })
-         }
-         const session = await stripe.CheckOut.session.retrieve(sessionId)
-         if(session.payment_status==="paid"){
-            const courseId = session.metadata.courseId
-            const userId = session.metadata.userId
 
+        const existingOrder = await Order.findOne({ stripeSessionId: sessionId }); // ✅ Fixed: stripeSessionId not stripesSessionId
+
+        if (existingOrder) {
+            return res.status(200).json({ message: "Order already created" }); // ✅ Fixed: Logic was reversed
+        }
+
+        // ✅ Fixed: stripe.checkout.sessions (lowercase)
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        if (session.payment_status === "paid") {
+            const { courseId, userId } = session.metadata;
 
             const newOrder = new Order({
-                user:userId,
-                course:courseId,
-                totalAmount:session.amount_total/100,
-                stripesSessionId:sessionId    
-            }) 
-            await newOrder.save()
+                userId: userId, // ✅ Fixed: userId not user
+                course: courseId,
+                totalAmount: session.amount_total / 100,
+                stripeSessionId: sessionId // ✅ Fixed: stripeSessionId not stripesSessionId
+            });
+
+            await newOrder.save();
+
             return res.status(201).json({
-                message:" payment successfull",
+                message: "Payment successful",
                 orderId: newOrder._id
-            })
-         }
-         return res.status(401).json({
-            message:"Payment failed"
-         })
+            });
+        }
+
+        return res.status(401).json({ message: "Payment failed" });
     } catch (error) {
-        console.log(error,"from checkout success")
+        console.log(error, "from checkout success");
+        return res.status(500).json({ message: "Server error" });
     }
-}
+};
 
 
 

@@ -1,11 +1,11 @@
 import cloudinary from "../config/cloudinary.js";
 import { Course } from "../models/course.model.js";
 import { GoogleGenAI } from '@google/genai';
-import { user } from "../models/user.model.js";
-import { Modules } from "../models/module.model.js";
+import User from "../models/user.model.js";
+import Modules from "../models/module.model.js";
 
-const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY)
-const model = genAI.getGenaiModel({model:'gemini-3.5-flash'})
+const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
 
 export const createCourse = async (req, res) => {
@@ -123,3 +123,21 @@ export const getPurchasedCourse = async(req,res)=>{
         return res.status(401).json({ message: "Server error" });
     }
 }
+export const getAllCoursePurchased = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId).populate("purchasedCourses");
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        return res.status(200).json({
+            success: true,
+            courses: user.purchasedCourses
+        });
+    } catch (error) {
+        console.log(`error from getAllCoursePurchased: ${error}`);
+        return res.status(401).json({ message: "Server error" });
+    }
+};

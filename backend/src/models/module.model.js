@@ -5,15 +5,13 @@ const moduleSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course"
     },
-    
     video: {
         type: String,
         required: true,
-    
     },
     title: {
         type: String,
-        required: true, 
+        required: true,
     },
     quiz: {
         type: mongoose.Schema.Types.ObjectId,
@@ -25,5 +23,8 @@ const moduleSchema = new mongoose.Schema({
             ref: "Comment"
         }
     ]
-}, { timestamps: true })
-export const Modules = mongoose.model("Modules", moduleSchema);
+}, { timestamps: true });
+
+// ✅ FIXED: Placeholder ki jagah actual names use kiye
+const Modules = mongoose.model('Modules', moduleSchema);
+export default Modules;

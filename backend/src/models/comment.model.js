@@ -5,7 +5,7 @@ const commentSchema = mongoose.Schema({
          type: mongoose.Schema.Types.ObjectId,
          ref: "User"
     },
-    moduelId:{
+    moduleId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Module"
     },
@@ -15,7 +15,6 @@ const commentSchema = mongoose.Schema({
     }
 },{timestamps: true})
 
-export const Comment = mongoose.model("Comment", commentSchema)
 
-
-
+const Comment = mongoose.model('Comment', commentSchema);
+export default Comment;
