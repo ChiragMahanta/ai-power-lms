@@ -1,33 +1,34 @@
 import SearchResult from '@/components/SearchResult'
 import CourseSection from '@/components/CourseSection'
-import React from 'react'
+import React, { useState } from 'react'
 
 const Home = () => {
-  const[SearchInput, setSearchInput] = useState('')
-  const[ActiveSearchInput, setActiveSearch] = useState('')
-  // console.log(SearchInput,"SearchInput")
-  // console.log(ActiveInput,"ActiveSearch")
-  const HandleSubmit=(e)=>{
+  const [searchInput, setSearchInput] = useState('')
+  const [activeSearchInput, setActiveSearch] = useState('')
+
+  const handleSubmit = (e) => {
     e.preventDefault()
-    SetActiveSearch(SearchInput)    
+    setActiveSearch(searchInput)
   }
-  const resetFilter=()=>{
-    SetActiveSearch("SearchInput")   
+
+  const resetFilter = () => {
+    setActiveSearch('')
   }
+
   return (
     <div className='min-h-screen'>
-      <SearchResult 
-      SearchInput={SearchInput}
-      setSearchInput={setSearchInput}
-      handleSubmit={handleSubmit}
-      onReset={resetFilter}
-      hasActiveSearch={!!SearchInput}
+      <SearchResult
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        handleSubmit={handleSubmit}
+        onReset={resetFilter}
+        hasActiveSearch={!!activeSearchInput}
       />
-      search
-      <CourseSection 
-      ActiveSearch={ActiveSearchInput }/>
+      <CourseSection
+        activeSearch={activeSearchInput}
+      />
     </div>
   )
 }
 
-export default home
+export default Home

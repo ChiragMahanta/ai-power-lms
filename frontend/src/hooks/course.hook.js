@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { } from ''
+
 import { createCourseApi, getCourseApi } from '@/Api/course.api'
 export const useCreateCourseHook=()=>{
     const queryCLient = useQueryCLient()

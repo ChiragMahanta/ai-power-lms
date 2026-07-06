@@ -1,24 +1,19 @@
-import { useUserStore } from "@/store/user.store"
-import { useGetUserHook } from "@/hooks/User.hook"
-import { Navigate } from "react-router-dom"
-import { useEffect } from "react"
+import React from 'react'
+import { Navigate } from 'react-router-dom'
+import { useGetUserHook } from '@/hooks/User.hook'
 
-export const ProtectedRoute = ({ children }) => {
-    const setUser = useUserStore((state) => state.setUser)
-    const { data, isLoading, isError, error } = useGetUserHook()
+const ProtectedRoute = ({ children }) => {
+  const { data: user, isLoading } = useGetUserHook()
 
-    useEffect(() => {
-        if (data) setUser(data)
-    }, 
-)
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>
+  }
 
-    if (isLoading) return <div>Loading...</div>
+  if (!user) {
+    return <Navigate to="/login" replace />
+  }
 
-    if (isError && error?.response?.status === 401) {
-        return <Navigate to={'/login'} replace />
-    }
-
-    if (!data) return <Navigate to={'/login'} replace />
-
-    return children
+  return children
 }
+
+export default ProtectedRoute;  

@@ -1,14 +1,14 @@
 import React from 'react'
-import { useLoginHook, UserLoginHook } from '@/hooks/User.hook.js'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { Spinner } from '@/components/ui/spinner'
+import { useLoginHook } from "@/hooks/User.hook.js";
 
 const Login = () => {
   const { register, handleSubmit } = useForm()
   const {mutate, isPending } = useLoginHook()
   const loginFormHandler = (data) => {
-    mutate(dasta)
+    mutate(data)
     console.log(data)
   }
   return (

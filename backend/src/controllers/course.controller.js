@@ -4,8 +4,8 @@ import { GoogleGenAI } from '@google/genai';
 import User from "../models/user.model.js";
 import Modules from "../models/module.model.js";
 
-const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+
 
 
 export const createCourse = async (req, res) => {
@@ -64,9 +64,11 @@ export const getCourse = async (req, res) => {
     
         `
 
-        const result = await model.generateContent(prompt);
-
-        const aiText = result?.response?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+       const response = await ai.models.generateContent({
+    model: 'gemini-2.0-flash',
+    contents: prompt
+});
+const aiText = response?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
             .replace(/[`"\n]/g, "") || "";
         console.log("search", search)
         console.log("Ai text", aiText)
