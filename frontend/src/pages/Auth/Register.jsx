@@ -9,43 +9,51 @@ const Register = () => {
   const { mutate, isPending } = useRegisterHook()
 
   const registerFormHandler = (data) => {
-    console.log(data)
+    console.log("Form Data:", data)
     mutate(data)
   }
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
       <form
         onSubmit={handleSubmit(registerFormHandler)}
-        className="flex flex-col gap-6 border border-zinc-700 p-8"
+        className="flex flex-col gap-5 border border-zinc-200 bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
       >
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">Create Account</h2>
+
         <input
-          className="border-2 border-zinc-400"
+          className="border-2 border-zinc-300 rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none transition-colors"
           type="text"
           placeholder="Enter Your Name"
-          {...register('fullName')}
+          {...register('fullName', { required: true })}
         />
         <input
-          className="border-2 border-zinc-400"
+          className="border-2 border-zinc-300 rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none transition-colors"
           type="email"
           placeholder="Enter Your Email"
-          {...register('email')}
+          {...register('email', { required: true })}
         />
         <input
-          className="border-2 border-zinc-400"
+          className="border-2 border-zinc-300 rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none transition-colors"
           type="password"
           placeholder="Enter Your Password"
-          {...register('password')}
+          {...register('password', { required: true })}
         />
-        <button type="submit" className='text-center'>
-          {isPending ? <Spinner/> : 'Register'}
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+        >
+          {isPending ? <Spinner /> : 'Register'}
         </button>
-        <h1>
+
+        <p className="text-center text-gray-600">
           Already have an account?{' '}
-          <Link className="text-blue-500" to="/login">
+          <Link className="text-blue-600 hover:underline font-medium" to="/login">
             Login
           </Link>
-        </h1>
+        </p>
       </form>
     </div>
   )
