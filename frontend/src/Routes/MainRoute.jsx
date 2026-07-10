@@ -10,7 +10,6 @@ import DashboardAnalytics from '@/pages/Admin/DashboardAnalytics'
 import CreateModule from '@/pages/Admin/CreateModule'
 import Quiz from '@/pages/User/Quiz'
 import ProtectedRoute from './ProtectedRoute'
-import CreateCourse from '@/pages/Admin/CreateCourse'
 import DashboardProducts from '@/pages/Admin/DashboardProducts'
 
 const MainRoutes = () => {
@@ -31,22 +30,11 @@ const MainRoutes = () => {
           <Home />
         </ProtectedRoute>
       } />
-      
       <Route path='/singleCourse/:id' element={
         <ProtectedRoute>
           <SingleCourse />
         </ProtectedRoute>
       } />
-      <Route path='/dashboard/create-course' element={
-     <ProtectedRoute>
-    <CreateCourse />
-    </ProtectedRoute>
-} />
-<Route path='/dashboard/products' element={
-  <ProtectedRoute>
-    <DashboardProducts />
-  </ProtectedRoute>
-} />
       <Route path='/YourCourse' element={
         <ProtectedRoute>
           <YourCourse />
@@ -72,6 +60,11 @@ const MainRoutes = () => {
       <Route path='/dashboard/analytics' element={
         <ProtectedRoute>
           <DashboardAnalytics />
+        </ProtectedRoute>
+      } />
+      <Route path='/dashboard/products' element={
+        <ProtectedRoute>
+          <DashboardProducts />
         </ProtectedRoute>
       } />
       <Route path='/CourseModule/:id' element={
