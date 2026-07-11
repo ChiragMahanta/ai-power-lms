@@ -25,14 +25,15 @@ export const useRegisterHook = () => {
   });
 };
 
+// src/hooks/User.hook.js me useLoginHook
 export const useLoginHook = () => {
   const navigate = useNavigate();
-  const { setUser } = useUserStore();
+  const { setUser } = useUserStore(); // ← Ye import hona chahiye
 
   return useMutation({
     mutationFn: loginApi,
     onSuccess: (data) => {
-      setUser(data.user || data);
+      setUser(data.user || data); // ← Ye line zaroori hai!
       toast.success(data?.message);
       navigate("/");
     },

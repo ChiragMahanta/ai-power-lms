@@ -27,24 +27,36 @@ const Dashboard = () => {
 
       {/* Navigation Links (Tere original links preserved) */}
       <div className="flex gap-4 mb-8">
-        <Link 
-          to="/dashboard/analytics" 
-          className="bg-white hover:bg-gray-50 text-gray-700 px-5 py-2.5 rounded-lg shadow-sm border border-gray-200 transition-all font-medium"
-        >
-          📊 Analytics
-        </Link>
-        <Link 
-          to="/dashboard/products" 
-          className="bg-white hover:bg-gray-50 text-gray-700 px-5 py-2.5 rounded-lg shadow-sm border border-gray-200 transition-all font-medium"
-        >
-          📦 Products
-        </Link>
-        <Link 
-          to="/dashboard/create-course" 
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg shadow-md transition-all font-medium ml-auto"
-        >
-          + Add New Course
-        </Link>
+        {/* Navigation Links - FIXED */}
+<div className="flex gap-4 mb-8 flex-wrap">
+  <Link 
+    to="/dashboard/analytics" 
+    className="bg-white hover:bg-gray-50 text-gray-700 px-5 py-2.5 rounded-lg shadow-sm border border-gray-200 transition-all font-medium"
+  >
+    📊 Analytics
+  </Link>
+  <Link 
+    to="/dashboard/products" 
+    className="bg-white hover:bg-gray-50 text-gray-700 px-5 py-2.5 rounded-lg shadow-sm border border-gray-200 transition-all font-medium"
+  >
+    📦 Products
+  </Link>
+  <Link 
+    to="/dashboard/products" 
+    className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg shadow-md transition-all font-medium ml-auto"
+  >
+    + Add New Course
+  </Link>
+  // ❌ OLD
+<Link to="/dashboard/create-course" className="text-blue-600 hover:underline mt-2 inline-block">
+  Create your first course →
+</Link>
+
+// ✅ NEW
+<Link to="/dashboard/products" className="text-blue-600 hover:underline mt-2 inline-block">
+  Create your first course →
+</Link>
+</div>
       </div>
 
       {/* Stats Cards */}
