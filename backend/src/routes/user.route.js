@@ -1,13 +1,12 @@
 import express from "express";
 import { getUser, Login, logout, Register } from "../controllers/user.controller.js";
-import{ protectRoute } from "../middleware/auth.middleware.js";
+// ❌ import isAuthenticated from "../middlewares/isAuthenticated.js"; // ABHI COMMENT/REMOVE KAREIN
 
+const router = express.Router();
 
-const userRoute = express.Router()
- 
+router.post("/register", Register);
+router.post("/login", Login);
+router.get("/getUser", getUser); 
+router.post("/logout", logout);
 
-userRoute.post('/register',Register)
-userRoute.post('/login', Login)
-userRoute.post('/logout', logout)
-userRoute.get('/getUser',protectRoute, getUser)
-export default userRoute
+export default router;
